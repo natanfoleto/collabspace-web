@@ -2,21 +2,21 @@ import { Trash } from "phosphor-react";
 
 import Avatar from "../Avatar";
 
-import { Container, CommentBox, AuthorAndTime } from "./styles";
+import { Container, CommentBox, AuthorAndTime, ButtonDelete } from "./styles";
 
 const Comment: React.FC = () => {
   return (
     <Container>
-      <Avatar />
+      <Avatar src="https://media.fstatic.com/DH5yngg4vQQdK9csLNLAzsPJ9N8=/full-fit-in/290x478/filters:format(webp)/media/artists/avatar/2022/12/naldo-benny_a305866.jpg" />
 
       <CommentBox>
         <AuthorAndTime>
-          <h1>Natan Foleto</h1>
+          <h1>Naldo Beny</h1>
           <time>Cerca de 2h</time>
 
-          <button>
+          <ButtonDelete>
             <Trash size={22} />
-          </button>
+          </ButtonDelete>
         </AuthorAndTime>
 
         <p>

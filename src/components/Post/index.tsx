@@ -22,13 +22,13 @@ const Post: React.FC = () => {
       <Header>
         <Author>
           <Avatar
-            src="https://i.pinimg.com/736x/b7/65/02/b76502e936cd209b595bd7a537e74db4.jpg"
+            src="https://b.fssta.com/uploads/application/soccer/headshots/713.png"
             borderEffect
           />
 
           <AuthorInfo>
-            <h1>Natan Foleto</h1>
-            <p>natanfoleto@hotmail.com</p>
+            <h1>Neymar Jr</h1>
+            <p>ney@hotney.com</p>
           </AuthorInfo>
         </Author>
 

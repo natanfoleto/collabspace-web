@@ -7,8 +7,11 @@ interface ContainerProps {
 export const Container = styled.img<ContainerProps>`
   width: 56px;
   height: 56px;
+  min-width: 56px;
+  min-height: 56px;
   background: white;
   border-radius: 6px;
+  object-fit: cover;
 
   ${({ borderEffect }) =>
     borderEffect &&
