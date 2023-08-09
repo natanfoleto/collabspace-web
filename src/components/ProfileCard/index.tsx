@@ -1,28 +1,36 @@
-import { Container, Cover, Divider, ButtonEdit } from "./styles";
+import {
+  Container,
+  Header,
+  Cover,
+  Content,
+  Divider,
+  ButtonEdit,
+  Footer,
+} from "./styles";
 
 import Avatar from "../Avatar";
 
 const ProfileCard: React.FC = () => {
   return (
     <Container>
-      <header>
+      <Header>
         <Cover src="https://cutewallpaper.org/29/dual-screen-mr-robot-wallpaper/247286624.jpg" />
 
         <div>
           <Avatar />
         </div>
-      </header>
+      </Header>
 
-      <main>
+      <Content>
         <h1>Natan Foleto</h1>
         <p>natanfoleto@hotmail.com</p>
-      </main>
+      </Content>
 
       <Divider />
 
-      <footer>
+      <Footer>
         <ButtonEdit>Editar seu perfil</ButtonEdit>
-      </footer>
+      </Footer>
     </Container>
   );
 };
