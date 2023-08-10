@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 export const Container = styled.div`
   width: 100vw;
+  max-height: 100vh;
   min-height: 100vh;
   background: var(--zinc-900);
 `;
@@ -17,4 +18,5 @@ export const Posts = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  overflow-y: scroll;
 `;

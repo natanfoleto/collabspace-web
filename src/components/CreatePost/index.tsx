@@ -1,5 +1,6 @@
 import Avatar from "../Avatar";
 import InputArea from "../InputArea";
+import Button from "../Button";
 
 import { Container, Content } from "./styles";
 
@@ -14,6 +15,8 @@ const CreatePost: React.FC = () => {
 
         <InputArea rows={2} placeholder="O que temos para hoje?" />
       </Content>
+
+      <Button>Publicar</Button>
     </Container>
   );
 };
