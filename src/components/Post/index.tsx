@@ -1,5 +1,6 @@
 import Avatar from "../Avatar";
 import Comment from "../Comment";
+import InputArea from "../InputArea";
 
 import {
   Container,
@@ -11,7 +12,6 @@ import {
   Hashtags,
   Divider,
   CommentForm,
-  InputArea,
   ButtonComment,
   Comments,
 } from "./styles";
@@ -56,7 +56,7 @@ const Post: React.FC = () => {
       <CommentForm>
         <h1>Deixe seu comentário</h1>
 
-        <InputArea name=""></InputArea>
+        <InputArea rows={3} placeholder="Escreva seu comentário aqui ..." />
 
         <ButtonComment>Comentar</ButtonComment>
       </CommentForm>
