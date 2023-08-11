@@ -4,7 +4,6 @@ export const Container = styled.aside`
   width: 25%;
   height: 350px;
   background: var(--zinc-800);
-
   border-radius: 8px;
 `;
 

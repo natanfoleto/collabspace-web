@@ -1,3 +1,5 @@
+import { ThumbsUp, ChatCircleText } from "phosphor-react";
+
 import Avatar from "../Avatar";
 import Comment from "../Comment";
 import InputArea from "../InputArea";
@@ -12,11 +14,25 @@ import {
   Description,
   Hashtags,
   Divider,
+  Interactions,
+  InteractionInfo,
+  CountReaction,
+  CountComment,
+  InteractionAction,
+  ButtonAction,
+  CommentArea,
   CommentForm,
   Comments,
 } from "./styles";
+import { useState } from "react";
 
 const Post: React.FC = () => {
+  const [commentArea, setCommentArea] = useState(false);
+
+  function toggleCommentArea() {
+    setCommentArea(!commentArea);
+  }
+
   return (
     <Container>
       <Header>
@@ -51,21 +67,48 @@ const Post: React.FC = () => {
         </Hashtags>
       </Content>
 
-      <Divider />
+      <Interactions>
+        <InteractionInfo>
+          <CountReaction>
+            <span>
+              <ThumbsUp size={19} weight="bold" />
+              32
+            </span>
+          </CountReaction>
 
-      <CommentForm>
-        <h1>Deixe seu comentário</h1>
+          <CountComment>
+            <span onClick={toggleCommentArea}>7 comentários</span>
+          </CountComment>
+        </InteractionInfo>
 
-        <InputArea rows={3} placeholder="Escreva seu comentário aqui ..." />
+        <InteractionAction>
+          <ButtonAction>
+            <ThumbsUp size={22} />
+            Reagir
+          </ButtonAction>
 
-        <Button>Comentar</Button>
-      </CommentForm>
+          <ButtonAction onClick={toggleCommentArea}>
+            <ChatCircleText size={22} />
+            Comentar
+          </ButtonAction>
+        </InteractionAction>
+      </Interactions>
 
-      <Divider />
+      <CommentArea commentArea={commentArea}>
+        <CommentForm>
+          <h1>Deixe seu comentário</h1>
 
-      <Comments>
-        <Comment />
-      </Comments>
+          <InputArea rows={3} placeholder="Escreva seu comentário aqui ..." />
+
+          <Button>Comentar</Button>
+        </CommentForm>
+
+        <Divider />
+
+        <Comments>
+          <Comment />
+        </Comments>
+      </CommentArea>
     </Container>
   );
 };
