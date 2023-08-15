@@ -94,7 +94,7 @@ const Post: React.FC = () => {
         </InteractionAction>
       </Interactions>
 
-      <CommentArea commentArea={commentArea}>
+      <CommentArea $commentArea={commentArea}>
         <CommentForm>
           <h1>Deixe seu comentário</h1>
 

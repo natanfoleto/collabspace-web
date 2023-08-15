@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled, css } from "styled-components";
 
 export const Container = styled.div`
   width: 100vw;
@@ -11,7 +11,7 @@ export const Container = styled.div`
 `;
 
 export const Form = styled.form`
-  width: 320px;
+  min-width: 320px;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
@@ -22,6 +22,14 @@ export const Form = styled.form`
     font-size: 3rem;
     font-weight: 600;
     margin-bottom: 2.5rem;
+  }
+
+  input[type="date"] {
+    color: var(--zinc-300);
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(66.66%);
   }
 `;
 
