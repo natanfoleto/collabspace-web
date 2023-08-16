@@ -1,6 +1,15 @@
 import { useState } from "react";
 
-import { Container, Form, Group, Label, Input, Button } from "./styles";
+import {
+  Container,
+  Form,
+  Group,
+  Label,
+  Input,
+  AreaEmail,
+  AreaPassword,
+  Button,
+} from "./styles";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -9,6 +18,17 @@ const Register: React.FC = () => {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const areaEmail = !name || !birthDate;
+  const areaPassword = !email || !confirmEmail || areaEmail;
+  const isTheSameEmails = email === confirmEmail;
+  const isEmailReal = !email.match(
+    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+  );
+  const isTheSamePasswords = password === confirmPassword;
+  const isPasswordStrong = !password.match(
+    /(?=^.{8,}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+  );
 
   return (
     <Container>
@@ -36,13 +56,15 @@ const Register: React.FC = () => {
             type="date"
             id="birthdate"
             value={birthDate}
+            min="1900-01-01"
+            max="2022-12-31"
             onChange={(e) => {
               setBirthDate(e.target.value);
             }}
           />
         </Group>
 
-        <Group>
+        <AreaEmail $areaEmail={areaEmail}>
           <Label htmlFor="email">Endereço de e-mail</Label>
 
           <Input
@@ -63,10 +85,15 @@ const Register: React.FC = () => {
             onChange={(e) => {
               setConfirmEmail(e.target.value);
             }}
+            onPaste={(e) => {
+              e.preventDefault();
+            }}
           />
-        </Group>
+        </AreaEmail>
 
-        <Group>
+        <AreaPassword
+          $areaPassword={areaPassword || !isTheSameEmails || isEmailReal}
+        >
           <Label htmlFor="password">Sua senha secreta</Label>
 
           <Input
@@ -87,10 +114,24 @@ const Register: React.FC = () => {
             onChange={(e) => {
               setConfirmPassword(e.target.value);
             }}
+            onPaste={(e) => {
+              e.preventDefault();
+            }}
           />
-        </Group>
+        </AreaPassword>
 
-        <Button>Cadastrar</Button>
+        <Button
+          disabled={
+            areaEmail ||
+            areaPassword ||
+            !isTheSameEmails ||
+            isEmailReal ||
+            !isTheSamePasswords ||
+            isPasswordStrong
+          }
+        >
+          Cadastrar
+        </Button>
       </Form>
     </Container>
   );

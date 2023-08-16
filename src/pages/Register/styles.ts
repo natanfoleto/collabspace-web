@@ -1,5 +1,13 @@
 import { styled, css } from "styled-components";
 
+interface AreaEmailProps {
+  $areaEmail: boolean;
+}
+
+interface AreaPasswordProps {
+  $areaPassword: boolean;
+}
+
 export const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
@@ -60,6 +68,30 @@ export const Input = styled.input`
   }
 `;
 
+export const AreaEmail = styled(Group)<AreaEmailProps>`
+  max-height: 150px;
+  transition: 0.3s ease;
+  overflow: hidden;
+
+  ${({ $areaEmail }) =>
+    $areaEmail &&
+    css`
+      max-height: 0;
+    `}
+`;
+
+export const AreaPassword = styled(Group)<AreaPasswordProps>`
+  max-height: 150px;
+  transition: 0.3s ease;
+  overflow: hidden;
+
+  ${({ $areaPassword }) =>
+    $areaPassword &&
+    css`
+      max-height: 0;
+    `}
+`;
+
 export const Button = styled.button`
   height: 48px;
   background: var(--emerald-600);
@@ -76,5 +108,10 @@ export const Button = styled.button`
 
   &:hover {
     background: var(--emerald-800);
+  }
+
+  &:disabled {
+    background: var(--zinc-600);
+    cursor: not-allowed;
   }
 `;
