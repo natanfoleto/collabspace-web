@@ -1,6 +1,7 @@
 import LayoutDefault from "../../layouts/Default";
 
 import RequestFriend from "../../components/RequestFriend";
+import FriendCard from "../../components/FriendCard";
 
 import {
   Container,
@@ -12,6 +13,8 @@ import {
   General,
   Total,
   Contact,
+  Friends,
+  FriendList,
   Sidebar,
   Requests,
   RequestList,
@@ -52,6 +55,14 @@ const Profile: React.FC = () => {
               </Contact>
             </UserInfo>
           </Overview>
+
+          <Friends>
+            <h1>Amigos</h1>
+
+            <FriendList>
+              <FriendCard />
+            </FriendList>
+          </Friends>
         </Content>
 
         <Sidebar>

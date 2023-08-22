@@ -7,6 +7,10 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   width: 75%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 export const Overview = styled.div``;
@@ -83,6 +87,23 @@ export const Contact = styled.div`
     color: var(--zinc-300);
     font-weight: 300;
   }
+`;
+
+export const Friends = styled.div`
+  height: 500px;
+  background: var(--zinc-800);
+  border-radius: 8px;
+  padding: 1.5rem;
+
+  h1 {
+    font-size: 1.375rem;
+    color: var(--zinc-200);
+    font-weight: 600;
+  }
+`;
+
+export const FriendList = styled.div`
+  margin-top: 2rem;
 `;
 
 export const Sidebar = styled.aside`
