@@ -1,5 +1,6 @@
 import LayoutDefault from "../../layouts/Default";
 
+import AvatarCircle from "../../components/AvatarCircle";
 import RequestFriend from "../../components/RequestFriend";
 import FriendCard from "../../components/FriendCard";
 
@@ -11,7 +12,6 @@ import {
   Overview,
   UserBanner,
   Cover,
-  Avatar,
   EditCoverButton,
   UserInfo,
   EditInfoButton,
@@ -39,7 +39,12 @@ const Profile: React.FC = () => {
 
               <Cover src="https://cutewallpaper.org/29/dual-screen-mr-robot-wallpaper/247286624.jpg" />
 
-              <Avatar src="https://i.pinimg.com/736x/b7/65/02/b76502e936cd209b595bd7a537e74db4.jpg" />
+              <div>
+                <AvatarCircle
+                  size="192px"
+                  src="https://i.pinimg.com/736x/b7/65/02/b76502e936cd209b595bd7a537e74db4.jpg"
+                />
+              </div>
 
               <EditInfoButton>
                 <PencilSimple size={22} weight="bold" />

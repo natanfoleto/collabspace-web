@@ -8,7 +8,7 @@ import {
   Footer,
 } from "./styles";
 
-import Avatar from "../Avatar";
+import AvatarSquare from "../AvatarSquare";
 
 const ProfileCard: React.FC = () => {
   return (
@@ -17,7 +17,7 @@ const ProfileCard: React.FC = () => {
         <Cover src="https://cutewallpaper.org/29/dual-screen-mr-robot-wallpaper/247286624.jpg" />
 
         <div>
-          <Avatar
+          <AvatarSquare
             src="https://i.pinimg.com/736x/b7/65/02/b76502e936cd209b595bd7a537e74db4.jpg"
             borderEffect
           />
