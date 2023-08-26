@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   createContext,
   useContext,
@@ -10,6 +12,7 @@ import { User } from "../services/Sessions/types";
 
 import { session } from "../services/Sessions";
 import api from "../services/Api/api";
+import usePersistedState from "../hooks/usePersistedState";
 
 interface SignInRequest {
   email: string;
@@ -39,9 +42,10 @@ const AuthenticationContext = createContext<AuthenticationContextType>(
 );
 
 const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
-  const [user, setUser] = useState<Partial<User> | null>(null);
-  const [token, setToken] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = usePersistedState<Partial<User> | null>("user", null);
+  const [token, setToken] = usePersistedState<string>("token", "");
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const signIn = useCallback(
     async ({ email, password }: SignInRequest): Promise<SignInResponse> => {
@@ -67,7 +71,7 @@ const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
         return { result: "error", message: error.message };
       }
     },
-    [],
+    [setUser, setToken],
   );
 
   const signOut = () => {
