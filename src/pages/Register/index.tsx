@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -14,6 +14,7 @@ import {
   Button,
   LinkLogin,
 } from "./styles";
+import { createUser } from "../../services/users";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -40,9 +41,47 @@ const Register: React.FC = () => {
     navigate("/");
   };
 
+  const handleSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+
+      try {
+        const { result, message, data } = await createUser({
+          name,
+          email,
+          confirmEmail,
+          password,
+          confirmPassword,
+          birthDate,
+        });
+
+        console.log(data);
+
+        if (result === "success") {
+          handleLogin();
+        }
+
+        if (result === "error") {
+          //
+        }
+
+        alert(message);
+      } catch (error) {}
+    },
+    [
+      birthDate,
+      confirmEmail,
+      confirmPassword,
+      email,
+      name,
+      password,
+      handleLogin,
+    ],
+  );
+
   return (
     <Container>
-      <Form autoComplete="on">
+      <Form autoComplete="on" onSubmit={handleSubmit}>
         <h1>Cadastre-se</h1>
 
         {email && !isEmail && <ErrorAlert>O e-mail não é válido!</ErrorAlert>}

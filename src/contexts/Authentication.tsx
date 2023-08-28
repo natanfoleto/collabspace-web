@@ -11,6 +11,7 @@ import {
 import { User } from "../services/Sessions/types";
 
 import { session } from "../services/Sessions";
+
 import api from "../services/Api/api";
 import usePersistedState from "../hooks/usePersistedState";
 
