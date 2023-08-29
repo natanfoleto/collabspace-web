@@ -30,6 +30,8 @@ interface AuthenticationContextType {
   loading: boolean;
   user: Partial<User> | null;
   token: string;
+  loggedEmail: string;
+  handleLoggedEmail: (email: string) => void;
   signIn(data: SignInRequest): Promise<SignInResponse>;
   signOut(): void;
 }
@@ -47,6 +49,14 @@ const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
   const [token, setToken] = usePersistedState<string>("token", "");
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [loggedEmail, setLoggedEmail] = useState<string>("");
+
+  const handleLoggedEmail = useCallback(
+    (email: string) => {
+      setLoggedEmail(email);
+    },
+    [setLoggedEmail],
+  );
 
   const signIn = useCallback(
     async ({ email, password }: SignInRequest): Promise<SignInResponse> => {
@@ -87,6 +97,8 @@ const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
         loading,
         user,
         token,
+        loggedEmail,
+        handleLoggedEmail,
         signIn,
         signOut,
       }}

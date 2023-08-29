@@ -1,5 +1,9 @@
 import { useState, useCallback, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { createUser } from "../../services/users";
+import { useAuthentication } from "../../contexts/Authentication";
 
 import {
   Container,
@@ -14,9 +18,10 @@ import {
   Button,
   LinkLogin,
 } from "./styles";
-import { createUser } from "../../services/users";
 
 const Register: React.FC = () => {
+  const { handleLoggedEmail } = useAuthentication();
+
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -37,9 +42,9 @@ const Register: React.FC = () => {
     /(?=^.{8,}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
   );
 
-  const handleLogin = () => {
+  const handleLogin = useCallback(() => {
     navigate("/");
-  };
+  }, [navigate]);
 
   const handleSubmit = useCallback(
     async (e: FormEvent) => {
@@ -55,17 +60,16 @@ const Register: React.FC = () => {
           birthDate,
         });
 
-        console.log(data);
-
         if (result === "success") {
-          handleLogin();
+          if (data) {
+            toast.success(message);
+
+            handleLoggedEmail(data.email);
+            handleLogin();
+          }
         }
 
-        if (result === "error") {
-          //
-        }
-
-        alert(message);
+        if (result === "error") toast.error(message);
       } catch (error) {}
     },
     [
@@ -76,6 +80,7 @@ const Register: React.FC = () => {
       name,
       password,
       handleLogin,
+      handleLoggedEmail,
     ],
   );
 
