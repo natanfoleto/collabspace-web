@@ -1,3 +1,11 @@
+import { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import moment from "moment";
+
+import { IUser } from "../../services/users/types";
+import { listUserById } from "../../services/users";
+
 import LayoutDefault from "../../layouts/Default";
 
 import AvatarCircle from "../../components/AvatarCircle";
@@ -26,7 +34,39 @@ import {
   RequestList,
 } from "./styles";
 
+moment.defineLocale("pt-br", {
+  weekdays: "Segunda_Terça_Quarta_Quinta_Sexta_Sábado_Domingo".split("_"),
+  months:
+    "Janeiro_Fereveiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro".split(
+      "_",
+    ),
+});
+
 const Profile: React.FC = () => {
+  const { id } = useParams();
+
+  const [user, setUser] = useState<IUser | null>(null);
+
+  const handleListUserById = useCallback(async () => {
+    try {
+      if (id) {
+        const { result, message, data } = await listUserById({ id });
+
+        if (result === "success") {
+          if (data) setUser(data.user);
+        }
+
+        if (result === "error") toast.error(message);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    handleListUserById();
+  }, [id, handleListUserById]);
+
   return (
     <LayoutDefault>
       <Container>
@@ -37,12 +77,12 @@ const Profile: React.FC = () => {
                 <Camera size={22} weight="fill" />
               </EditCoverButton>
 
-              <Cover src="https://cutewallpaper.org/29/dual-screen-mr-robot-wallpaper/247286624.jpg" />
+              <Cover src={"https://i.imgur.com/gH2QLjf.png"} />
 
               <div>
                 <AvatarCircle
                   size="192px"
-                  src="https://i.pinimg.com/736x/b7/65/02/b76502e936cd209b595bd7a537e74db4.jpg"
+                  src={user?.avatarUrl || "https://i.imgur.com/HYrZqHy.jpg"}
                 />
               </div>
 
@@ -53,7 +93,7 @@ const Profile: React.FC = () => {
 
             <UserInfo>
               <General>
-                <h1>Natan Foleto</h1>
+                <h1>{user?.name}</h1>
                 <p>
                   Você só vai me olhar, me julgar, tirar conclusões
                   precipitadas, mas ainda… assim não vai me conhecer.
@@ -75,14 +115,16 @@ const Profile: React.FC = () => {
                   Jaborandi, São Paulo, Brasil
                 </span>
 
-                <span>
-                  <Phone size={20} weight="bold" />
-                  (17) 99242-4418
-                </span>
+                {user?.telephone && (
+                  <span>
+                    <Phone size={20} weight="bold" />
+                    {user.telephone}
+                  </span>
+                )}
 
                 <span>
                   <Clock size={20} weight="bold" />
-                  Entrou em Fevereiro de 2023
+                  {moment(user?.createdAt).format("[Entrou em] MMMM [de] YYYY")}
                 </span>
               </Contact>
             </UserInfo>

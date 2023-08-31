@@ -11,7 +11,7 @@ export const Container = styled.div`
   padding: 2rem;
 `;
 
-export const Content = styled.div`
+export const Form = styled.form`
   width: 100%;
   display: flex;
   gap: 1rem;
