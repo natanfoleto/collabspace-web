@@ -33,12 +33,12 @@ const CreatePost: React.FC = () => {
 
   return (
     <Container>
-      <Form onSubmit={handleCreatePost}>
-        <Avatar
-          src={user?.avatarUrl || "https://i.imgur.com/HYrZqHy.jpg"}
-          borderEffect
-        />
+      <Avatar
+        src={user?.avatarUrl || "https://i.imgur.com/HYrZqHy.jpg"}
+        borderEffect
+      />
 
+      <Form onSubmit={handleCreatePost}>
         <InputArea
           name="content"
           value={content}

@@ -10,7 +10,7 @@ function AuthRoutes() {
       <Route path="/feed" element={<Feed />} />
       <Route path="/me/:id" element={<Profile />} />
 
-      <Route path="*" element={<h1>Not found!</h1>} />
+      <Route path="*" element={<Navigate to="/feed" />} />
     </Routes>
   );
 }

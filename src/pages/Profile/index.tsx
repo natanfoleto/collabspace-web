@@ -33,6 +33,7 @@ import {
   Requests,
   RequestList,
 } from "./styles";
+import { useAuthentication } from "../../contexts/Authentication";
 
 moment.defineLocale("pt-br", {
   weekdays: "Segunda_Terça_Quarta_Quinta_Sexta_Sábado_Domingo".split("_"),
@@ -44,6 +45,7 @@ moment.defineLocale("pt-br", {
 
 const Profile: React.FC = () => {
   const { id } = useParams();
+  const { signOut } = useAuthentication();
 
   const [user, setUser] = useState<IUser | null>(null);
 
@@ -166,6 +168,10 @@ const Profile: React.FC = () => {
               <RequestFriend />
             </RequestList>
           </Requests>
+
+          <a style={{ color: "white" }} onClick={signOut}>
+            Sair
+          </a>
         </Sidebar>
       </Container>
     </LayoutDefault>
