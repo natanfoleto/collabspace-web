@@ -1,5 +1,7 @@
 import { AppResponse } from "../../Api/types";
 
+import { IComment } from "../../comments/types";
+
 interface IUserPost {
   id: string;
   name: string;
@@ -13,7 +15,7 @@ interface IPost {
   visibility: 1 | 2 | 3;
   publishedAt: string;
   user: IUserPost;
-  comments: any[];
+  comments: IComment[];
   reactions: any[];
 }
 
