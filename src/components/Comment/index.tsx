@@ -20,6 +20,7 @@ interface CommentProps {
   content: string;
   reactions: any[];
   commentedAt: string;
+  onDelete(id: string): void;
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -31,6 +32,7 @@ const Comment: React.FC<CommentProps> = ({
   content,
   reactions = [],
   commentedAt,
+  onDelete,
 }) => {
   const navigate = useNavigate();
   const { user } = useAuthentication();
@@ -54,7 +56,7 @@ const Comment: React.FC<CommentProps> = ({
           </time>
 
           {(user && user.id === authorId) || user?.id === postAuthorId ? (
-            <ButtonDelete>
+            <ButtonDelete onClick={() => onDelete(commentId)}>
               <Trash size={22} />
             </ButtonDelete>
           ) : null}

@@ -3,6 +3,7 @@ import { AppResponse } from "../../Api/types";
 interface IUserComment {
   id: string;
   name: string;
+  email: string;
   avatarUrl: string | null;
 }
 
@@ -20,12 +21,20 @@ interface ICreateCommentRequest {
 }
 
 interface ICreateCommentResponse extends AppResponse {
-  data?: {
-    id: string;
-    postId: string;
-    userId: string;
-    content: string;
-  };
+  data?: IComment;
 }
 
-export type { IComment, ICreateCommentRequest, ICreateCommentResponse };
+interface IDeleteCommentRequest {
+  commentId: string;
+  postId: string;
+}
+
+type IDeleteCommentResponse = AppResponse;
+
+export type {
+  IComment,
+  ICreateCommentRequest,
+  ICreateCommentResponse,
+  IDeleteCommentRequest,
+  IDeleteCommentResponse,
+};

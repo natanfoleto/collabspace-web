@@ -6,7 +6,7 @@ import moment from "moment";
 
 import { DiffToString } from "../../utils/date";
 
-import { createComment } from "../../services/comments";
+import { createComment, deleteComment } from "../../services/comments";
 import { IComment } from "../../services/comments/types";
 
 import AvatarSquare from "../AvatarSquare";
@@ -45,7 +45,6 @@ interface PostProps {
   comments: IComment[];
   reactions: any[];
   publishedAt: string;
-  onCreateComment: () => void;
 }
 
 const Post: React.FC<PostProps> = ({
@@ -59,9 +58,10 @@ const Post: React.FC<PostProps> = ({
   comments = [],
   reactions = [],
   publishedAt,
-  onCreateComment,
 }) => {
   const navigate = useNavigate();
+
+  const [postComments, setPostComments] = useState(comments);
 
   const [commentArea, setCommentArea] = useState(false);
   const [commentContent, setCommentContent] = useState("");
@@ -71,15 +71,17 @@ const Post: React.FC<PostProps> = ({
       e.preventDefault();
 
       try {
-        const { result, message } = await createComment({
+        const { result, message, data } = await createComment({
           postId,
           content: commentContent,
         });
 
         if (result === "success") {
-          setCommentContent("");
-          onCreateComment();
-          toast.success(message);
+          if (data) {
+            setCommentContent("");
+            comments.unshift(data);
+            toast.success(message);
+          }
         }
 
         if (result === "error") {
@@ -89,7 +91,23 @@ const Post: React.FC<PostProps> = ({
         toast.error(error.message);
       }
     },
-    [postId, commentContent, onCreateComment],
+    [postId, commentContent, comments],
+  );
+
+  const handleDeleteComment = useCallback(
+    async (commentId: string) => {
+      try {
+        const { result } = await deleteComment({ commentId, postId });
+
+        if (result === "success")
+          setPostComments(
+            postComments.filter((comment) => comment.id !== commentId),
+          );
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    },
+    [postComments, postId],
   );
 
   function toggleCommentArea() {
@@ -179,7 +197,7 @@ const Post: React.FC<PostProps> = ({
         <Divider />
 
         <Comments>
-          {comments.map((comment) => (
+          {postComments.map((comment) => (
             <Comment
               key={comment.id}
               postAuthorId={authorId}
@@ -190,6 +208,7 @@ const Post: React.FC<PostProps> = ({
               content={comment.content}
               reactions={comment.reactions}
               commentedAt={comment.commentedAt}
+              onDelete={handleDeleteComment}
             />
           ))}
         </Comments>

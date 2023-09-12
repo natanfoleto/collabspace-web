@@ -5,6 +5,7 @@ import { IComment } from "../../comments/types";
 interface IUserPost {
   id: string;
   name: string;
+  email: string;
   avatarUrl: string | null;
 }
 
@@ -26,12 +27,7 @@ interface ICreatePostRequest {
 }
 
 interface ICreatePostResponse extends AppResponse {
-  data?: {
-    id: string;
-    userId: string;
-    tags: string | null;
-    visibility: 1 | 2 | 3;
-  };
+  data?: IPost;
 }
 
 interface IListAllPostsResponse extends AppResponse {
