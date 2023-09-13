@@ -27,7 +27,7 @@ const deleteComment = async ({
     .then((res) => res)
     .catch((err) => err);
 
-  return response;
+  return response.data;
 };
 
 export { createComment, deleteComment };

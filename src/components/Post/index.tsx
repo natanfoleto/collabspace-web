@@ -7,7 +7,9 @@ import moment from "moment";
 import { DiffToString } from "../../utils/date";
 
 import { createComment, deleteComment } from "../../services/comments";
+import { createReaction } from "../../services/reactions";
 import { IComment } from "../../services/comments/types";
+import { IReaction } from "../../services/reactions/types";
 
 import AvatarSquare from "../AvatarSquare";
 import Comment from "../Comment";
@@ -43,7 +45,7 @@ interface PostProps {
   content: string;
   tags: string | null;
   comments: IComment[];
-  reactions: any[];
+  reactions: IReaction[];
   publishedAt: string;
 }
 
@@ -62,6 +64,7 @@ const Post: React.FC<PostProps> = ({
   const navigate = useNavigate();
 
   const [postComments, setPostComments] = useState(comments);
+  const [postReactions, setPostReactions] = useState(reactions);
 
   const [commentArea, setCommentArea] = useState(false);
   const [commentContent, setCommentContent] = useState("");
@@ -79,7 +82,15 @@ const Post: React.FC<PostProps> = ({
         if (result === "success") {
           if (data) {
             setCommentContent("");
-            comments.unshift(data);
+
+            setPostComments((prevState) => {
+              const postComments = [...prevState];
+
+              postComments.unshift(data);
+
+              return postComments;
+            });
+
             toast.success(message);
           }
         }
@@ -91,7 +102,7 @@ const Post: React.FC<PostProps> = ({
         toast.error(error.message);
       }
     },
-    [postId, commentContent, comments],
+    [postId, commentContent],
   );
 
   const handleDeleteComment = useCallback(
@@ -99,16 +110,37 @@ const Post: React.FC<PostProps> = ({
       try {
         const { result } = await deleteComment({ commentId, postId });
 
-        if (result === "success")
-          setPostComments(
-            postComments.filter((comment) => comment.id !== commentId),
+        if (result === "success") {
+          setPostComments((prevState) =>
+            prevState.filter((comment) => comment.id !== commentId),
           );
+        }
       } catch (error: any) {
         toast.error(error.message);
       }
     },
-    [postComments, postId],
+    [postId],
   );
+
+  const handleCreateReaction = useCallback(async () => {
+    try {
+      const { result, data } = await createReaction({ postId, entityType: 1 });
+
+      if (result === "success") {
+        if (data) {
+          setPostReactions((prevState) => {
+            const postReactions = [...prevState];
+
+            postReactions.unshift(data);
+
+            return postReactions;
+          });
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, [postId]);
 
   function toggleCommentArea() {
     setCommentArea(!commentArea);
@@ -154,19 +186,19 @@ const Post: React.FC<PostProps> = ({
           <CountReaction>
             <span>
               <ThumbsUp size={19} weight="bold" />
-              {reactions.length}
+              {postReactions.length}
             </span>
           </CountReaction>
 
           <CountComment>
             <span onClick={toggleCommentArea}>
-              {comments.length} comentários
+              {postComments.length} comentários
             </span>
           </CountComment>
         </InteractionInfo>
 
         <InteractionAction>
-          <ButtonAction>
+          <ButtonAction onClick={handleCreateReaction}>
             <ThumbsUp size={22} />
             Reagir
           </ButtonAction>

@@ -1,5 +1,7 @@
 import { AppResponse } from "../../Api/types";
 
+import { IReaction } from "../../reactions/types";
+
 interface IUserComment {
   id: string;
   name: string;
@@ -12,7 +14,7 @@ interface IComment {
   content: string;
   commentedAt: string;
   user: IUserComment;
-  reactions: any[];
+  reactions: IReaction[];
 }
 
 interface ICreateCommentRequest {
