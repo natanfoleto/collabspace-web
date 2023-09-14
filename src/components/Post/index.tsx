@@ -6,8 +6,10 @@ import moment from "moment";
 
 import { DiffToString } from "../../utils/date";
 
+import { useAuthentication } from "../../contexts/Authentication";
+
 import { createComment, deleteComment } from "../../services/comments";
-import { createReaction } from "../../services/reactions";
+import { createReaction, deleteReaction } from "../../services/reactions";
 import { IComment } from "../../services/comments/types";
 import { IReaction } from "../../services/reactions/types";
 
@@ -62,12 +64,17 @@ const Post: React.FC<PostProps> = ({
   publishedAt,
 }) => {
   const navigate = useNavigate();
+  const { user } = useAuthentication();
 
   const [postComments, setPostComments] = useState(comments);
   const [postReactions, setPostReactions] = useState(reactions);
 
   const [commentArea, setCommentArea] = useState(false);
   const [commentContent, setCommentContent] = useState("");
+
+  const [userReacted, setUserReacted] = useState(
+    postReactions.some((reaction) => reaction.user.id === user?.id),
+  );
 
   const handleCreateComment = useCallback(
     async (e: FormEvent) => {
@@ -124,7 +131,10 @@ const Post: React.FC<PostProps> = ({
 
   const handleCreateReaction = useCallback(async () => {
     try {
-      const { result, data } = await createReaction({ postId, entityType: 1 });
+      const { result, data } = await createReaction({
+        postId,
+        entityType: 1,
+      });
 
       if (result === "success") {
         if (data) {
@@ -141,6 +151,39 @@ const Post: React.FC<PostProps> = ({
       toast.error(error.message);
     }
   }, [postId]);
+
+  const handleDeleteReaction = useCallback(async (reactionId: string) => {
+    try {
+      const { result } = await deleteReaction({ reactionId });
+
+      if (result === "success") {
+        setPostReactions((prevState) =>
+          prevState.filter((reaction) => reaction.id !== reactionId),
+        );
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, []);
+
+  function toggleReaction() {
+    if (userReacted) {
+      const reaction = postReactions.find(
+        (reaction) => reaction.user.id === user?.id,
+      );
+
+      if (reaction) {
+        handleDeleteReaction(reaction.id);
+
+        setUserReacted(false);
+      }
+
+      return;
+    }
+
+    handleCreateReaction();
+    setUserReacted(true);
+  }
 
   function toggleCommentArea() {
     setCommentArea(!commentArea);
@@ -185,7 +228,8 @@ const Post: React.FC<PostProps> = ({
         <InteractionInfo>
           <CountReaction>
             <span>
-              <ThumbsUp size={19} weight="bold" />
+              <ThumbsUp size={19} weight={userReacted ? "fill" : "bold"} />
+
               {postReactions.length}
             </span>
           </CountReaction>
@@ -198,8 +242,8 @@ const Post: React.FC<PostProps> = ({
         </InteractionInfo>
 
         <InteractionAction>
-          <ButtonAction onClick={handleCreateReaction}>
-            <ThumbsUp size={22} />
+          <ButtonAction onClick={toggleReaction}>
+            <ThumbsUp size={22} weight={userReacted ? "fill" : "regular"} />
             Reagir
           </ButtonAction>
 

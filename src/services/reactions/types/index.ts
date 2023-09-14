@@ -25,4 +25,16 @@ interface ICreateReactionResponse extends AppResponse {
   data?: IReaction;
 }
 
-export type { IReaction, ICreateReactionRequest, ICreateReactionResponse };
+interface IDeleteReactionRequest {
+  reactionId: string;
+}
+
+type IDeleteReactionResponse = AppResponse;
+
+export type {
+  IReaction,
+  ICreateReactionRequest,
+  ICreateReactionResponse,
+  IDeleteReactionRequest,
+  IDeleteReactionResponse,
+};

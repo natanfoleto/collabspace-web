@@ -1,6 +1,11 @@
 import api from "../Api/api";
 
-import { ICreateReactionRequest, ICreateReactionResponse } from "./types";
+import {
+  ICreateReactionRequest,
+  ICreateReactionResponse,
+  IDeleteReactionRequest,
+  IDeleteReactionResponse,
+} from "./types";
 
 const createReaction = async ({
   postId,
@@ -19,4 +24,15 @@ const createReaction = async ({
   return response.data;
 };
 
-export { createReaction };
+const deleteReaction = async ({
+  reactionId,
+}: IDeleteReactionRequest): Promise<IDeleteReactionResponse> => {
+  const response = await api
+    .delete(`/reactions/${reactionId}`)
+    .then((res) => res)
+    .catch((err) => err);
+
+  return response.data;
+};
+
+export { createReaction, deleteReaction };
