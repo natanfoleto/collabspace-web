@@ -15,10 +15,22 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
+  position: relative;
+
   min-width: 480px;
   padding: 1rem;
   background: var(--zinc-800);
   border-radius: 8px;
 
   margin: 2.5rem;
+
+  svg {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    color: var(--zinc-200);
+
+    cursor: pointer;
+  }
 `;

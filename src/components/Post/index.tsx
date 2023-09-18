@@ -297,7 +297,7 @@ const Post: React.FC<PostProps> = ({
         </Comments>
       </CommentArea>
 
-      <Modal isOpen={modalReactions} close={toggleModalReactions}>
+      <Modal isOpen={modalReactions} onClose={toggleModalReactions}>
         <h1>Conteúdo do modal</h1>
       </Modal>
     </Container>
