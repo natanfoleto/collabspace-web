@@ -18,7 +18,6 @@ export const Content = styled.div`
   position: relative;
 
   min-width: 480px;
-  padding: 1rem;
   background: var(--zinc-800);
   border-radius: 8px;
 

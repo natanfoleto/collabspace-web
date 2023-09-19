@@ -18,6 +18,7 @@ import Comment from "../Comment";
 import InputArea from "../InputArea";
 import Button from "../Button";
 import Modal from "../Modal";
+import ReactionList from "../ReactionList";
 
 import {
   Container,
@@ -298,7 +299,7 @@ const Post: React.FC<PostProps> = ({
       </CommentArea>
 
       <Modal isOpen={modalReactions} onClose={toggleModalReactions}>
-        <h1>Conteúdo do modal</h1>
+        <ReactionList data={postReactions} />
       </Modal>
     </Container>
   );
