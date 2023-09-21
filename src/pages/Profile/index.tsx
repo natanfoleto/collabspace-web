@@ -11,6 +11,7 @@ import LayoutDefault from "../../layouts/Default";
 import AvatarCircle from "../../components/AvatarCircle";
 import RequestFriend from "../../components/RequestFriend";
 import FriendCard from "../../components/FriendCard";
+import Modal from "../../components/Modal";
 
 import { Camera, PencilSimple, MapPin, Phone, Clock } from "phosphor-react";
 
@@ -32,6 +33,7 @@ import {
   Sidebar,
   Requests,
   RequestList,
+  FormEditAvatar,
 } from "./styles";
 import { useAuthentication } from "../../contexts/Authentication";
 
@@ -49,6 +51,8 @@ const Profile: React.FC = () => {
 
   const [user, setUser] = useState<IUser | null>(null);
 
+  const [modalEditAvatar, setModalEditAvatar] = useState(false);
+
   const handleListUserById = useCallback(async () => {
     try {
       if (id) {
@@ -64,6 +68,10 @@ const Profile: React.FC = () => {
       toast.error(error.message);
     }
   }, [id]);
+
+  function toggleModalEditAvatar() {
+    setModalEditAvatar(!modalEditAvatar);
+  }
 
   useEffect(() => {
     handleListUserById();
@@ -81,7 +89,7 @@ const Profile: React.FC = () => {
 
               <Cover src={"https://i.imgur.com/gH2QLjf.png"} />
 
-              <div>
+              <div onClick={toggleModalEditAvatar}>
                 <AvatarCircle size="192px" avatar={user?.avatarUrl} />
               </div>
 
@@ -170,6 +178,18 @@ const Profile: React.FC = () => {
             Sair
           </a>
         </Sidebar>
+
+        <Modal
+          width="960px"
+          height="120px"
+          isOpen={modalEditAvatar}
+          onClose={toggleModalEditAvatar}
+        >
+          <FormEditAvatar>
+            <input type="text" placeholder="URL da imagem" />
+            <button>SALVAR</button>
+          </FormEditAvatar>
+        </Modal>
       </Container>
     </LayoutDefault>
   );
