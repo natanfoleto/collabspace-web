@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  overflow-y: hidden;
+`;
 
 export const Title = styled.h1`
   padding: 1rem 1rem 0;
@@ -15,10 +21,19 @@ export const Navbar = styled.div`
 `;
 
 export const Reactions = styled.div`
-  span {
-    font-size: 1rem;
-    font-weight: 300;
-    color: var(--zinc-400);
+  height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar-track {
+    background: var(--zinc-900);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--zinc-700);
+  }
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
   }
 `;
 
@@ -48,4 +63,17 @@ export const AuthorInfo = styled.div`
   }
 
   cursor: pointer;
+`;
+
+export const NoReactions = styled.div`
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--zinc-400);
+  border-top: 1px solid var(--zinc-700);
 `;

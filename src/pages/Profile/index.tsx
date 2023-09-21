@@ -82,10 +82,7 @@ const Profile: React.FC = () => {
               <Cover src={"https://i.imgur.com/gH2QLjf.png"} />
 
               <div>
-                <AvatarCircle
-                  size="192px"
-                  src={user?.avatarUrl || "https://i.imgur.com/HYrZqHy.jpg"}
-                />
+                <AvatarCircle size="192px" avatar={user?.avatarUrl} />
               </div>
 
               <EditInfoButton>

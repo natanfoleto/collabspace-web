@@ -21,7 +21,7 @@ export const Content = styled.div`
   background: var(--zinc-800);
   border-radius: 8px;
 
-  margin: 2.5rem;
+  margin: 2.5rem 0;
 
   svg {
     position: absolute;
