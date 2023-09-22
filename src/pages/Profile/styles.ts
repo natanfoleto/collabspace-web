@@ -218,42 +218,42 @@ export const FormEditAvatar = styled.form`
   align-items: center;
   justify-content: center;
   gap: 8px;
+`;
 
-  input {
-    width: 100%;
-    height: 48px;
-    background: var(--zinc-700);
-    color: var(--zinc-300);
-    font-size: 1rem;
-    padding: 1.25rem 1rem;
-    border-radius: 4px;
-    border: 0;
-    outline: 0;
+export const InputEditAvatar = styled.input`
+  width: 100%;
+  height: 48px;
+  background: var(--zinc-700);
+  color: var(--zinc-300);
+  font-size: 1rem;
+  padding: 1.25rem 1rem;
+  border-radius: 4px;
+  border: 0;
+  outline: 0;
 
-    ::placeholder {
-      color: var(--zinc-500);
-    }
+  &::placeholder {
+    color: var(--zinc-400);
   }
+`;
 
-  button {
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.25rem 1rem;
-    border: 0;
-    outline: 0;
-    border-radius: 4px;
-    color: var(--white);
-    font-weight: 600;
-    background: var(--emerald-500);
-    transition: all 0.15s;
+export const ButtonEditAvatar = styled.button`
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1rem;
+  border: 0;
+  outline: 0;
+  border-radius: 4px;
+  color: var(--white);
+  font-weight: 600;
+  background: var(--emerald-500);
+  transition: all 0.15s;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover {
-      color: var(--zinc-200);
-      background: var(--emerald-600);
-    }
+  &:hover {
+    color: var(--zinc-200);
+    background: var(--emerald-600);
   }
 `;

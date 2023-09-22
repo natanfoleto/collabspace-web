@@ -32,6 +32,7 @@ interface AuthenticationContextType {
   token: string;
   loggedEmail: string;
   handleLoggedEmail: (email: string) => void;
+  handleAvatarUrl: (avatarUrl: string) => void;
   signIn(data: SignInRequest): Promise<SignInResponse>;
   signOut(): void;
   me(id?: string): void;
@@ -59,6 +60,16 @@ const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
       setLoggedEmail(email);
     },
     [setLoggedEmail],
+  );
+
+  const handleAvatarUrl = useCallback(
+    (avatarUrl: string) => {
+      setUser((prevState) => ({
+        ...prevState,
+        avatarUrl,
+      }));
+    },
+    [setUser],
   );
 
   const signIn = useCallback(
@@ -106,6 +117,7 @@ const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
         token,
         loggedEmail,
         handleLoggedEmail,
+        handleAvatarUrl,
         signIn,
         signOut,
         me,

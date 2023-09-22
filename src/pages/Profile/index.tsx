@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, FormEvent } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
 
 import { IUser } from "../../services/users/types";
-import { listUserById } from "../../services/users";
+import { listUserById, updateAvatar } from "../../services/users";
 
 import LayoutDefault from "../../layouts/Default";
 
@@ -34,6 +34,8 @@ import {
   Requests,
   RequestList,
   FormEditAvatar,
+  InputEditAvatar,
+  ButtonEditAvatar,
 } from "./styles";
 import { useAuthentication } from "../../contexts/Authentication";
 
@@ -47,11 +49,12 @@ moment.defineLocale("pt-br", {
 
 const Profile: React.FC = () => {
   const { id } = useParams();
-  const { signOut } = useAuthentication();
+  const { handleAvatarUrl, signOut } = useAuthentication();
 
   const [user, setUser] = useState<IUser | null>(null);
 
   const [modalEditAvatar, setModalEditAvatar] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   const handleListUserById = useCallback(async () => {
     try {
@@ -68,6 +71,27 @@ const Profile: React.FC = () => {
       toast.error(error.message);
     }
   }, [id]);
+
+  const handleUpdateAvatar = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+
+      try {
+        const { result, message } = await updateAvatar({ avatarUrl });
+
+        if (result === "success") {
+          handleAvatarUrl(avatarUrl);
+          toast.success(message);
+          setModalEditAvatar(!modalEditAvatar);
+        }
+
+        if (result === "error") toast.error(message);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    },
+    [avatarUrl, handleAvatarUrl, modalEditAvatar],
+  );
 
   function toggleModalEditAvatar() {
     setModalEditAvatar(!modalEditAvatar);
@@ -89,8 +113,12 @@ const Profile: React.FC = () => {
 
               <Cover src={"https://i.imgur.com/gH2QLjf.png"} />
 
-              <div onClick={toggleModalEditAvatar}>
-                <AvatarCircle size="192px" avatar={user?.avatarUrl} />
+              <div>
+                <AvatarCircle
+                  size="192px"
+                  avatar={avatarUrl || user?.avatarUrl}
+                  onClick={toggleModalEditAvatar}
+                />
               </div>
 
               <EditInfoButton>
@@ -180,14 +208,23 @@ const Profile: React.FC = () => {
         </Sidebar>
 
         <Modal
-          width="960px"
+          width="75%"
           height="120px"
           isOpen={modalEditAvatar}
           onClose={toggleModalEditAvatar}
         >
-          <FormEditAvatar>
-            <input type="text" placeholder="URL da imagem" />
-            <button>SALVAR</button>
+          <FormEditAvatar onSubmit={handleUpdateAvatar}>
+            <InputEditAvatar
+              name="avatarUrl"
+              type="text"
+              value={avatarUrl}
+              onChange={(e) => {
+                setAvatarUrl(e.target.value);
+              }}
+              required
+              placeholder="URL da imagem"
+            />
+            <ButtonEditAvatar>SALVAR</ButtonEditAvatar>
           </FormEditAvatar>
         </Modal>
       </Container>
