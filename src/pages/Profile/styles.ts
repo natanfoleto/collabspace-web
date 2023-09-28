@@ -123,6 +123,24 @@ export const Total = styled.div`
   }
 `;
 
+export const FriendshipArea = styled.div`
+  margin-top: 1rem;
+`;
+
+export const FriendshipButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--emerald-600);
+  color: var(--white);
+  border: 0;
+  outline: 0;
+  padding: 0.5rem;
+  border-radius: 8px;
+
+  cursor: pointer;
+`;
+
 export const Contact = styled.div`
   flex: 0.3;
 

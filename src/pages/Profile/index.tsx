@@ -13,7 +13,15 @@ import RequestFriend from "../../components/RequestFriend";
 import FriendCard from "../../components/FriendCard";
 import Modal from "../../components/Modal";
 
-import { Camera, PencilSimple, MapPin, Phone, Clock } from "phosphor-react";
+import {
+  Camera,
+  PencilSimple,
+  MapPin,
+  Phone,
+  Clock,
+  UserCirclePlus,
+  UserCircleMinus,
+} from "phosphor-react";
 
 import {
   Container,
@@ -26,6 +34,8 @@ import {
   EditInfoButton,
   General,
   Total,
+  FriendshipArea,
+  FriendshipButton,
   Contact,
   Friends,
   FriendList,
@@ -142,6 +152,7 @@ const Profile: React.FC = () => {
   }, [id, handleListUserById]);
 
   const isOwner = id === userLogged?.id;
+  const isFriend = true;
 
   return (
     <LayoutDefault>
@@ -193,6 +204,18 @@ const Profile: React.FC = () => {
                     <strong>1562</strong> amigos
                   </span>
                 </Total>
+
+                <FriendshipArea>
+                  <FriendshipButton>
+                    {isFriend ? (
+                      <UserCirclePlus size={20} weight="fill" />
+                    ) : (
+                      <UserCircleMinus size={20} weight="fill" />
+                    )}
+
+                    {isFriend ? "Adicionar amigo" : "Cancelar solicitação"}
+                  </FriendshipButton>
+                </FriendshipArea>
               </General>
 
               <Contact>
