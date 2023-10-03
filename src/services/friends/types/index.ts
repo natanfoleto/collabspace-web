@@ -15,6 +15,16 @@ interface IFriend {
   createdAt: string;
 }
 
+interface IRequest {
+  id: string;
+  user1: {
+    id: string;
+    name: string;
+    avatarUrl: string | null;
+  };
+  createdAt: string;
+}
+
 interface IListAllFriendsByUserRequest {
   id: string;
 }
@@ -25,8 +35,21 @@ interface IListAllFriendsByUserResponse extends AppResponse {
   };
 }
 
+interface IListAllRequestsByUserRequest {
+  id: string;
+}
+
+interface IListAllRequestsByUserResponse extends AppResponse {
+  data?: {
+    requests: IRequest[];
+  };
+}
+
 export type {
   IFriend,
+  IRequest,
   IListAllFriendsByUserRequest,
   IListAllFriendsByUserResponse,
+  IListAllRequestsByUserRequest,
+  IListAllRequestsByUserResponse,
 };

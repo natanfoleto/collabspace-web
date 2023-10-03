@@ -3,6 +3,8 @@ import api from "../Api/api";
 import {
   IListAllFriendsByUserRequest,
   IListAllFriendsByUserResponse,
+  IListAllRequestsByUserRequest,
+  IListAllRequestsByUserResponse,
 } from "./types";
 
 const listAllFriendsByUser = async ({
@@ -16,4 +18,15 @@ const listAllFriendsByUser = async ({
   return response.data;
 };
 
-export { listAllFriendsByUser };
+const listAllRequestsByUser = async ({
+  id,
+}: IListAllRequestsByUserRequest): Promise<IListAllRequestsByUserResponse> => {
+  const response = await api
+    .get(`/friends/listAllRequests/${id}`)
+    .then((res) => res)
+    .catch((err) => err);
+
+  return response.data;
+};
+
+export { listAllFriendsByUser, listAllRequestsByUser };

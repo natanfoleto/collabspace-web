@@ -10,16 +10,31 @@ import {
   ButtonAccept,
   ButtonRecuse,
 } from "./styles";
+import { useAuthentication } from "../../contexts/Authentication";
 
-const RequestFriend: React.FC = () => {
+interface RequestFriendProps {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string | null;
+}
+
+const RequestFriend: React.FC<RequestFriendProps> = ({
+  id,
+  name,
+  email,
+  avatarUrl,
+}) => {
+  const { me } = useAuthentication();
+
   return (
     <Container>
       <User>
-        <AvatarCircle avatar="https://images.generated.photos/rRsRe7d3ekuoklEhgFeJ0mlCEMsuw7je_Wzzmlo_9UM/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MjUzMzMyLmpwZw.jpg" />
+        <AvatarCircle avatar={avatarUrl} onClick={() => me(id)} />
 
-        <Info>
-          <h1>Marta Ribeiro</h1>
-          <p>martaribeiro@hotmaadsasdasdasdil.com</p>
+        <Info onClick={() => me(id)}>
+          <h1>{name}</h1>
+          <p>{email}</p>
         </Info>
       </User>
 

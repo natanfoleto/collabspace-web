@@ -5,6 +5,11 @@ import moment from "moment";
 
 import { IUser } from "../../services/users/types";
 import { listUserById, updateAvatar, updateCover } from "../../services/users";
+import { IFriend, IRequest } from "../../services/friends/types";
+import {
+  listAllFriendsByUser,
+  listAllRequestsByUser,
+} from "../../services/friends";
 
 import LayoutDefault from "../../layouts/Default";
 
@@ -50,8 +55,6 @@ import {
   ButtonEdit,
   PreviewAvatar,
 } from "./styles";
-import { listAllFriendsByUser } from "../../services/friends";
-import { IFriend } from "../../services/friends/types";
 
 moment.defineLocale("pt-br", {
   weekdays: "Segunda_Terça_Quarta_Quinta_Sexta_Sábado_Domingo".split("_"),
@@ -73,6 +76,7 @@ const Profile: React.FC = () => {
 
   const [user, setUser] = useState<IUser | null>(null);
   const [friends, setFriends] = useState<IFriend[]>([]);
+  const [requests, setRequests] = useState<IRequest[]>([]);
 
   const [modalEditAvatar, setModalEditAvatar] = useState(false);
   const [modalEditCover, setModalEditCover] = useState(false);
@@ -103,6 +107,22 @@ const Profile: React.FC = () => {
 
         if (result === "success") {
           if (data?.friends) setFriends(data.friends);
+        }
+
+        if (result === "error") toast.error(message);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, [id]);
+
+  const handleListAllRequestsByUser = useCallback(async () => {
+    try {
+      if (id) {
+        const { result, data, message } = await listAllRequestsByUser({ id });
+
+        if (result === "success") {
+          if (data?.requests) setRequests(data.requests);
         }
 
         if (result === "error") toast.error(message);
@@ -170,7 +190,13 @@ const Profile: React.FC = () => {
   useEffect(() => {
     handleListUserById();
     handleListAllFriendsByUser();
-  }, [id, handleListUserById, handleListAllFriendsByUser]);
+    handleListAllRequestsByUser();
+  }, [
+    id,
+    handleListUserById,
+    handleListAllFriendsByUser,
+    handleListAllRequestsByUser,
+  ]);
 
   const isOwner = id === userLogged?.id;
   const isFriend = true;
@@ -269,6 +295,7 @@ const Profile: React.FC = () => {
               {friends.map((friend) => (
                 <FriendCard
                   key={friend.id}
+                  id={friend.user2.id}
                   name={friend.user2.name}
                   avatarUrl={friend.user2.avatarUrl}
                 />
@@ -282,17 +309,23 @@ const Profile: React.FC = () => {
         </Content>
 
         <Sidebar>
-          <Requests>
-            <h1>Solicitações de amizade</h1>
+          {isOwner && (
+            <Requests>
+              <h1>Solicitações de amizade</h1>
 
-            <RequestList>
-              <RequestFriend />
-              <RequestFriend />
-              <RequestFriend />
-              <RequestFriend />
-              <RequestFriend />
-            </RequestList>
-          </Requests>
+              <RequestList>
+                {requests.map((request) => (
+                  <RequestFriend
+                    key={request.id}
+                    id={request.user1.id}
+                    name={request.user1.name}
+                    email={request.user1.name}
+                    avatarUrl={request.user1.avatarUrl}
+                  />
+                ))}
+              </RequestList>
+            </Requests>
+          )}
 
           <a style={{ color: "white" }} onClick={signOut}>
             Sair
