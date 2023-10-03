@@ -137,8 +137,14 @@ export const FriendshipButton = styled.button`
   outline: 0;
   padding: 0.5rem;
   border-radius: 8px;
+  transition: 0.15s all;
 
   cursor: pointer;
+
+  &:hover {
+    color: var(--zinc-100);
+    background: var(--emerald-700);
+  }
 `;
 
 export const Contact = styled.div`

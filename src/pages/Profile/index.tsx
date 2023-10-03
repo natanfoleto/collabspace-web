@@ -13,6 +13,8 @@ import RequestFriend from "../../components/RequestFriend";
 import FriendCard from "../../components/FriendCard";
 import Modal from "../../components/Modal";
 
+import { useAuthentication } from "../../contexts/Authentication";
+
 import {
   Camera,
   PencilSimple,
@@ -48,7 +50,8 @@ import {
   ButtonEdit,
   PreviewAvatar,
 } from "./styles";
-import { useAuthentication } from "../../contexts/Authentication";
+import { listAllFriendsByUser } from "../../services/friends";
+import { IFriend } from "../../services/friends/types";
 
 moment.defineLocale("pt-br", {
   weekdays: "Segunda_Terça_Quarta_Quinta_Sexta_Sábado_Domingo".split("_"),
@@ -69,6 +72,7 @@ const Profile: React.FC = () => {
   } = useAuthentication();
 
   const [user, setUser] = useState<IUser | null>(null);
+  const [friends, setFriends] = useState<IFriend[]>([]);
 
   const [modalEditAvatar, setModalEditAvatar] = useState(false);
   const [modalEditCover, setModalEditCover] = useState(false);
@@ -83,6 +87,22 @@ const Profile: React.FC = () => {
 
         if (result === "success") {
           if (data) setUser(data.user);
+        }
+
+        if (result === "error") toast.error(message);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, [id]);
+
+  const handleListAllFriendsByUser = useCallback(async () => {
+    try {
+      if (id) {
+        const { result, data, message } = await listAllFriendsByUser({ id });
+
+        if (result === "success") {
+          if (data?.friends) setFriends(data.friends);
         }
 
         if (result === "error") toast.error(message);
@@ -149,7 +169,8 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     handleListUserById();
-  }, [id, handleListUserById]);
+    handleListAllFriendsByUser();
+  }, [id, handleListUserById, handleListAllFriendsByUser]);
 
   const isOwner = id === userLogged?.id;
   const isFriend = true;
@@ -205,17 +226,19 @@ const Profile: React.FC = () => {
                   </span>
                 </Total>
 
-                <FriendshipArea>
-                  <FriendshipButton>
-                    {isFriend ? (
-                      <UserCirclePlus size={20} weight="fill" />
-                    ) : (
-                      <UserCircleMinus size={20} weight="fill" />
-                    )}
+                {!isOwner && (
+                  <FriendshipArea>
+                    <FriendshipButton>
+                      {isFriend ? (
+                        <UserCirclePlus size={20} weight="fill" />
+                      ) : (
+                        <UserCircleMinus size={20} weight="fill" />
+                      )}
 
-                    {isFriend ? "Adicionar amigo" : "Cancelar solicitação"}
-                  </FriendshipButton>
-                </FriendshipArea>
+                      {isFriend ? "Adicionar amigo" : "Cancelar solicitação"}
+                    </FriendshipButton>
+                  </FriendshipArea>
+                )}
               </General>
 
               <Contact>
@@ -243,18 +266,13 @@ const Profile: React.FC = () => {
             <h1>Amigos</h1>
 
             <FriendList>
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
-              <FriendCard />
+              {friends.map((friend) => (
+                <FriendCard
+                  key={friend.id}
+                  name={friend.user2.name}
+                  avatarUrl={friend.user2.avatarUrl}
+                />
+              ))}
             </FriendList>
 
             <AreaFriendButton>
