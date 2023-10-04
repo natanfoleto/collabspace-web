@@ -187,6 +187,25 @@ const Profile: React.FC = () => {
     else setModalPreviewAvatar(false);
   }
 
+  function relationship(): number {
+    const id = userLogged?.id;
+
+    if (id) {
+      if (
+        friends.some((friend) =>
+          [friend.user1.id, friend.user2.id].includes(id),
+        )
+      )
+        return 3;
+
+      if (requests.some((request) => request.user1.id === id)) return 2;
+
+      return 1;
+    }
+
+    return -1;
+  }
+
   useEffect(() => {
     handleListUserById();
     handleListAllFriendsByUser();
@@ -198,8 +217,8 @@ const Profile: React.FC = () => {
     handleListAllRequestsByUser,
   ]);
 
+  const type = relationship();
   const isOwner = id === userLogged?.id;
-  const isFriend = true;
 
   return (
     <LayoutDefault>
@@ -252,16 +271,32 @@ const Profile: React.FC = () => {
                   </span>
                 </Total>
 
+                {/*
+                  1 - Adicionar amigo
+                  2 - Cancelar solicitação
+                  3 - Desfazer amizade
+                  4 - Aceitar pedido
+                  5 - Recusar pedido
+                */}
+
                 {!isOwner && (
                   <FriendshipArea>
-                    <FriendshipButton>
-                      {isFriend ? (
+                    <FriendshipButton $type={type}>
+                      {type === 1 ? (
                         <UserCirclePlus size={20} weight="fill" />
-                      ) : (
+                      ) : type === 2 ? (
                         <UserCircleMinus size={20} weight="fill" />
-                      )}
+                      ) : type === 3 ? (
+                        <UserCircleMinus size={20} weight="fill" />
+                      ) : null}
 
-                      {isFriend ? "Adicionar amigo" : "Cancelar solicitação"}
+                      {type === 1
+                        ? "Adicionar amigo"
+                        : type === 2
+                        ? "Cancelar solicitação"
+                        : type === 3
+                        ? "Desfazer amizade"
+                        : null}
                     </FriendshipButton>
                   </FriendshipArea>
                 )}
