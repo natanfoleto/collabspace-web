@@ -1,7 +1,7 @@
 import { styled, css } from "styled-components";
 
 interface FriendshipButtonProps {
-  $type: number;
+  $relationship: number;
 }
 
 export const Container = styled.div`
@@ -128,6 +128,8 @@ export const Total = styled.div`
 `;
 
 export const FriendshipArea = styled.div`
+  display: flex;
+  gap: 8px;
   margin-top: 1rem;
 `;
 
@@ -135,10 +137,11 @@ export const FriendshipButton = styled.button<FriendshipButtonProps>`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: ${({ $type }) => {
-    if ($type === 1 || $type === 2) return css`var(--emerald-600)`;
-    if ($type === 3) return css`var(--red-500)`;
-    if ($type === 4 || $type === 5) return css`var(--blue-600)`;
+  background: ${({ $relationship }) => {
+    if ($relationship === 1 || $relationship === 2)
+      return css`var(--emerald-600)`;
+    if ($relationship === 3) return css`var(--red-500)`;
+    if ($relationship === 4) return css`var(--blue-600)`;
   }};
   color: var(--white);
   border: 0;

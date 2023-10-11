@@ -14,27 +14,28 @@ import { useAuthentication } from "../../contexts/Authentication";
 
 interface RequestFriendProps {
   id: string;
-  name: string;
-  email: string;
-  avatarUrl: string | null;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userAvatarUrl: string | null;
 }
 
 const RequestFriend: React.FC<RequestFriendProps> = ({
-  id,
-  name,
-  email,
-  avatarUrl,
+  userId,
+  userName,
+  userEmail,
+  userAvatarUrl,
 }) => {
   const { me } = useAuthentication();
 
   return (
     <Container>
       <User>
-        <AvatarCircle avatar={avatarUrl} onClick={() => me(id)} />
+        <AvatarCircle avatar={userAvatarUrl} onClick={() => me(userId)} />
 
-        <Info onClick={() => me(id)}>
-          <h1>{name}</h1>
-          <p>{email}</p>
+        <Info onClick={() => me(userId)}>
+          <h1>{userName}</h1>
+          <p>{userEmail}</p>
         </Info>
       </User>
 
