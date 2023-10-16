@@ -84,7 +84,7 @@ const Profile: React.FC = () => {
   const [requests, setRequests] = useState<IRequest[]>([]);
   const [userLoggedRequests, setUserLoggedRequests] = useState<IRequest[]>([]);
 
-  const [relationship, setRelationship] = useState(-1);
+  const [relationship, setRelationship] = useState(0);
   const [relationshipId, setRelationshipId] = useState<string>();
   const [modalEditAvatar, setModalEditAvatar] = useState(false);
   const [modalEditCover, setModalEditCover] = useState(false);
@@ -225,6 +225,15 @@ const Profile: React.FC = () => {
       toast.error(error.message);
     }
   }, [relationshipId]);
+
+  const handleRemoveRequest = useCallback(
+    async (id: string) => {
+      setRequests(requests.filter((request) => request.id !== id));
+
+      handleListAllFriendsByUser();
+    },
+    [requests, handleListAllFriendsByUser],
+  );
 
   const handleUpdateAvatar = useCallback(
     async (e: FormEvent) => {
@@ -501,6 +510,7 @@ const Profile: React.FC = () => {
                     userName={request.user1.name}
                     userEmail={request.user1.name}
                     userAvatarUrl={request.user1.avatarUrl}
+                    onRemove={() => handleRemoveRequest(request.id)}
                   />
                 ))}
               </RequestList>

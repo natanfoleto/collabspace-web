@@ -1,16 +1,20 @@
 import { Check, X } from "phosphor-react";
+import { useCallback } from "react";
+import { toast } from "react-toastify";
+
+import { useAuthentication } from "../../contexts/Authentication";
+import { acceptRequest, recuseRequest } from "../../services/friends";
 
 import AvatarCircle from "../AvatarCircle";
 
 import {
-  Container,
-  User,
-  Info,
   Actions,
   ButtonAccept,
   ButtonRecuse,
+  Container,
+  Info,
+  User,
 } from "./styles";
-import { useAuthentication } from "../../contexts/Authentication";
 
 interface RequestFriendProps {
   id: string;
@@ -18,15 +22,44 @@ interface RequestFriendProps {
   userName: string;
   userEmail: string;
   userAvatarUrl: string | null;
+  onRemove(): void;
 }
 
 const RequestFriend: React.FC<RequestFriendProps> = ({
+  id,
   userId,
   userName,
   userEmail,
   userAvatarUrl,
+  onRemove,
 }) => {
   const { me } = useAuthentication();
+
+  const handleAcceptRequest = useCallback(async () => {
+    try {
+      const { result, message } = await acceptRequest({
+        id,
+      });
+
+      if (result === "success") onRemove();
+      if (result === "error") toast.error(message);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, [id, onRemove]);
+
+  const handleRecuseRequest = useCallback(async () => {
+    try {
+      const { result, message } = await recuseRequest({
+        id,
+      });
+
+      if (result === "success") onRemove();
+      if (result === "error") toast.error(message);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, [id, onRemove]);
 
   return (
     <Container>
@@ -40,11 +73,11 @@ const RequestFriend: React.FC<RequestFriendProps> = ({
       </User>
 
       <Actions>
-        <ButtonAccept>
+        <ButtonAccept onClick={handleAcceptRequest}>
           <Check size={18} />
         </ButtonAccept>
 
-        <ButtonRecuse>
+        <ButtonRecuse onClick={handleRecuseRequest}>
           <X size={18} />
         </ButtonRecuse>
       </Actions>
