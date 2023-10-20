@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 import { SignOut, House } from "phosphor-react";
 
@@ -19,6 +19,10 @@ import {
   Divider,
 } from "./styles";
 
+const ITEMS_HEADER = [
+  { path: "/feed", icon: <House size={28} weight="fill" /> },
+];
+
 const Header: React.FC = () => {
   const navigate = useNavigate();
 
@@ -36,9 +40,15 @@ const Header: React.FC = () => {
 
       <Navbar>
         <Menu>
-          <Item>
-            <House size={28} weight="fill" />
-          </Item>
+          {ITEMS_HEADER.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) => (isActive ? "active" : "inactive")}
+            >
+              <Item>{item.icon}</Item>
+            </NavLink>
+          ))}
         </Menu>
 
         <Aside>

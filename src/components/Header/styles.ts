@@ -35,16 +35,42 @@ export const Navbar = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  svg {
-    color: var(--emerald-600);
-  }
 `;
 
 export const Menu = styled.div`
   height: 100%;
 
   display: flex;
+
+  .active {
+    button {
+      padding: 0 calc(2.5rem + 8px);
+
+      border-bottom: 3px solid var(--emerald-600);
+
+      svg {
+        color: var(--emerald-600);
+      }
+    }
+  }
+
+  .inactive {
+    margin: 4px 8px;
+
+    button {
+      border-bottom: 3px solid transparent;
+      border-radius: 8px;
+      transition: all 0.15s;
+
+      &:hover {
+        background: var(--zinc-700);
+      }
+
+      svg {
+        color: var(--zinc-400);
+      }
+    }
+  }
 `;
 
 export const Item = styled.button`
@@ -53,12 +79,12 @@ export const Item = styled.button`
   justify-content: center;
 
   height: 100%;
-  padding: 0 2rem;
+  padding: 0 2.5rem;
   background: transparent;
   outline: 0;
   border: 0;
 
-  border-bottom: 3px solid var(--emerald-600);
+  cursor: pointer;
 `;
 
 export const Aside = styled.aside`

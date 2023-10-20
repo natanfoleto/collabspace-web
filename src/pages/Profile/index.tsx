@@ -533,6 +533,7 @@ const Profile: React.FC = () => {
               }}
               placeholder="URL da imagem"
             />
+
             <ButtonEdit>SALVAR</ButtonEdit>
           </FormEdit>
         </Modal>
