@@ -1,4 +1,4 @@
-import { useEffect, ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { X } from "phosphor-react";
 
 import { Container, Content } from "./styles";
@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({
     return () => {
       document.removeEventListener("keydown", handleTypedKey);
     };
-  }, [isOpen, onClose]);
+  }, [onClose, isOpen]);
 
   return (
     isOpen && (

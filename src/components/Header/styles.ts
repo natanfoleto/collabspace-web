@@ -45,18 +45,16 @@ export const Menu = styled.div`
   .active {
     button {
       padding: 0 calc(2.5rem + 8px);
-
       border-bottom: 3px solid var(--emerald-600);
+    }
 
-      svg {
-        color: var(--emerald-600);
-      }
+    svg {
+      color: var(--emerald-600);
     }
   }
 
   .inactive {
     margin: 4px 8px;
-
     button {
       border-bottom: 3px solid transparent;
       border-radius: 8px;

@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -13,15 +13,17 @@ export const Forms = styled.div`
 `;
 
 export const Form = styled.form`
-  width: 100%;
   background: var(--zinc-800);
+
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
-  border-radius: 0.5rem;
 
   h1 {
-    font-size: 22px;
+    color: var(--zinc-100);
+    font-size: 1.5rem;
     font-weight: 500;
-    color: var(--zinc-200);
   }
 
   input[type="date"] {
@@ -33,38 +35,50 @@ export const Form = styled.form`
   }
 `;
 
-export const Groups = styled.div`
+export const Sections = styled.div`
   width: 100%;
   display: flex;
   gap: 1.5rem;
-  margin: 1.5rem 0 2rem 0;
+  margin: 1.5rem 0 1.5rem 0;
 `;
 
-export const Group = styled.div`
+export const Section = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  margin-bottom: 2rem;
 `;
 
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 8px;
+
+  textarea {
+    margin-bottom: 2rem;
+    background: var(--zinc-700);
+    color: var(--zinc-300);
+
+    &::placeholder {
+      color: var(--zinc-400);
+    }
+  }
 `;
 
 export const Label = styled.label`
-  font-size: 0.875rem;
   color: var(--zinc-100);
   font-weight: 300;
+  margin: 1rem 0;
 `;
 
 export const Input = styled.input`
+  width: 100%;
   height: 48px;
   background: var(--zinc-700);
   color: var(--zinc-300);
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding: 1.25rem 1rem;
+
   border-radius: 4px;
   border: 0;
   outline: 0;
@@ -72,20 +86,81 @@ export const Input = styled.input`
   &::placeholder {
     color: var(--zinc-400);
   }
+
+  &:focus {
+    outline: 1px solid var(--emerald-500);
+  }
+`;
+
+// export const Button = styled.button`
+//   width: 180px;
+//   height: 48px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 1.25rem 1rem;
+//   border: 0;
+//   outline: 0;
+//   border-radius: 8px;
+//   margin-top: 2rem;
+//   color: var(--white);
+//   font-weight: 600;
+//   background: var(--emerald-500);
+//   transition: all 0.15s;
+
+//   cursor: pointer;
+
+//   &:hover {
+//     color: var(--zinc-200);
+//     background: var(--emerald-600);
+//   }
+// `;
+
+export const ChangePassword = styled.form`
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+
+  h1 {
+    color: var(--zinc-100);
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  input {
+    color: var(--zinc-300);
+  }
+`;
+
+export const Address = styled.form`
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+
+  h1 {
+    color: var(--zinc-100);
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
 `;
 
 export const Select = styled.select`
+  width: 100%;
   height: 48px;
   background: var(--zinc-700);
   color: var(--zinc-300);
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding: 0 0.75rem;
+
   border-radius: 4px;
   border: 0;
-  outline: none !important;
-  box-shadow: 0;
+  outline: 0;
 
   &::placeholder {
-    color: var(--zinc-300);
+    color: var(--zinc-400);
   }
 `;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, FormEvent } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
 
@@ -31,6 +31,7 @@ import {
   MapPin,
   Phone,
   Clock,
+  Balloon,
   UserCirclePlus,
   UserCircleMinus,
 } from "phosphor-react";
@@ -59,7 +60,13 @@ import {
   InputEdit,
   ButtonEdit,
   PreviewAvatar,
+  PostsPosted,
+  TitlePosts,
 } from "./styles";
+import { listAllByUser } from "../../services/posts";
+import { formatarTelefone } from "../../utils/telephone";
+import { IPost } from "../../services/posts/types";
+import Post from "../../components/Post";
 
 moment.defineLocale("pt-br", {
   weekdays: "Segunda_Terça_Quarta_Quinta_Sexta_Sábado_Domingo".split("_"),
@@ -78,8 +85,6 @@ const Profile: React.FC = () => {
     handleCoverUrl,
   } = useAuthentication();
 
-  const navigate = useNavigate();
-
   const [user, setUser] = useState<IUser | null>(null);
   const [friends, setFriends] = useState<IFriend[]>([]);
   const [requests, setRequests] = useState<IRequest[]>([]);
@@ -92,6 +97,8 @@ const Profile: React.FC = () => {
   const [modalPreviewAvatar, setModalPreviewAvatar] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
+
+  const [posts, setPosts] = useState<IPost[]>([]);
 
   const handleListUserById = useCallback(async () => {
     try {
@@ -124,6 +131,25 @@ const Profile: React.FC = () => {
       toast.error(error.message);
     }
   }, [id]);
+
+  const handleListPostById = useCallback(async () => {
+    try {
+      if (id) {
+        const { result, message, data } = await listAllByUser({ id });
+
+        if (result === "success") {
+          if (data) setPosts(data.posts);
+        }
+
+        if (result === "error") toast.error(message);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, [id]);
+
+  const handleRemovePost = (id: string) =>
+    setPosts((prevState) => prevState.filter((post) => post.id !== id));
 
   const handleListAllRequestsByUser = useCallback(async () => {
     try {
@@ -296,6 +322,7 @@ const Profile: React.FC = () => {
     handleListAllFriendsByUser();
     handleListAllRequestsByUser();
     handleListAllRequestsByUserLogged();
+    handleListPostById();
   }, [
     id,
     relationship,
@@ -303,6 +330,7 @@ const Profile: React.FC = () => {
     handleListAllFriendsByUser,
     handleListAllRequestsByUser,
     handleListAllRequestsByUserLogged,
+    handleListPostById,
   ]);
 
   useEffect(() => {
@@ -377,7 +405,7 @@ const Profile: React.FC = () => {
               </div>
 
               {isOwner && (
-                <EditInfoButton onClick={() => navigate("/profile")}>
+                <EditInfoButton>
                   <PencilSimple size={22} weight="bold" />
                 </EditInfoButton>
               )}
@@ -390,7 +418,7 @@ const Profile: React.FC = () => {
 
                 <Total>
                   <span>
-                    <strong>115</strong> publicações
+                    <strong>{posts.length}</strong> publicações
                   </span>
                   <span>
                     <strong>{friends.length}</strong> amigos
@@ -445,21 +473,29 @@ const Profile: React.FC = () => {
               </General>
 
               <Contact>
-                <span>
-                  <MapPin size={20} weight="bold" />
-                  Jaborandi, São Paulo, Brasil
-                </span>
+                {user?.address?.[0] && (
+                  <span>
+                    <MapPin size={20} weight="bold" />
+                    {user?.address[0].city}, {user?.address[0].province},{" "}
+                    {user?.address[0].country}
+                  </span>
+                )}
 
                 {user?.telephone && (
                   <span>
                     <Phone size={20} weight="bold" />
-                    {user.telephone}
+                    {formatarTelefone(user.telephone)}
                   </span>
                 )}
 
                 <span>
                   <Clock size={20} weight="bold" />
                   {moment(user?.createdAt).format("[Entrou em] MMMM [de] YYYY")}
+                </span>
+
+                <span>
+                  <Balloon size={20} weight="bold" />
+                  {userLogged?.birthDate}
                 </span>
               </Contact>
             </UserInfo>
@@ -495,6 +531,29 @@ const Profile: React.FC = () => {
               <button>Ver todos os amigos</button>
             </AreaFriendButton>
           </Friends>
+
+          <TitlePosts>
+            <h1>Suas Publicações</h1>
+          </TitlePosts>
+
+          <PostsPosted>
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                authorId={post.user.id}
+                authorAvatar={post.user.avatarUrl}
+                authorName={post.user.name}
+                authorEmail={post.user.email}
+                postId={post.id}
+                content={post.content}
+                tags={post.tags}
+                comments={post.comments}
+                reactions={post.reactions}
+                publishedAt={post.publishedAt}
+                onDeletePost={handleRemovePost}
+              />
+            ))}
+          </PostsPosted>
         </Content>
 
         <Sidebar>
@@ -535,7 +594,6 @@ const Profile: React.FC = () => {
               }}
               placeholder="URL da imagem"
             />
-
             <ButtonEdit>SALVAR</ButtonEdit>
           </FormEdit>
         </Modal>
