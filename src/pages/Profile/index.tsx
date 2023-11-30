@@ -31,7 +31,7 @@ import {
   MapPin,
   Phone,
   Clock,
-  Balloon,
+  Cake,
   UserCirclePlus,
   UserCircleMinus,
 } from "phosphor-react";
@@ -60,9 +60,10 @@ import {
   InputEdit,
   ButtonEdit,
   PreviewAvatar,
-  PostsPosted,
+  Posts,
   TitlePosts,
 } from "./styles";
+
 import { listAllByUser } from "../../services/posts";
 import { formatarTelefone } from "../../utils/telephone";
 import { IPost } from "../../services/posts/types";
@@ -417,7 +418,7 @@ const Profile: React.FC = () => {
                 <p>{user?.bio}</p>
 
                 <Total>
-                  <span>
+                  <span onClick={() => (window.location.href = "#posts")}>
                     <strong>{posts.length}</strong> publicações
                   </span>
                   <span>
@@ -494,7 +495,8 @@ const Profile: React.FC = () => {
                 </span>
 
                 <span>
-                  <Balloon size={20} weight="bold" />
+                  <Cake size={20} weight="bold" />
+                  {/* <Balloon size={20} weight="bold" /> */}
                   {userLogged?.birthDate}
                 </span>
               </Contact>
@@ -536,7 +538,7 @@ const Profile: React.FC = () => {
             <h1>Suas Publicações</h1>
           </TitlePosts>
 
-          <PostsPosted>
+          <Posts id="posts">
             {posts.map((post) => (
               <Post
                 key={post.id}
@@ -553,7 +555,7 @@ const Profile: React.FC = () => {
                 onDeletePost={handleRemovePost}
               />
             ))}
-          </PostsPosted>
+          </Posts>
         </Content>
 
         <Sidebar>

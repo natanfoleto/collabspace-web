@@ -232,7 +232,7 @@ export const TitlePosts = styled.div`
   }
 `;
 
-export const PostsPosted = styled.div`
+export const Posts = styled.div`
   display: flex;
 
   flex-direction: column;
