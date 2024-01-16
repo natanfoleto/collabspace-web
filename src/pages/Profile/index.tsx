@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, FormEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
 
@@ -79,6 +79,8 @@ moment.defineLocale("pt-br", {
 
 const Profile: React.FC = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const {
     user: userLogged,
@@ -406,7 +408,7 @@ const Profile: React.FC = () => {
               </div>
 
               {isOwner && (
-                <EditInfoButton>
+                <EditInfoButton onClick={() => navigate("/updateprofile")}>
                   <PencilSimple size={22} weight="bold" />
                 </EditInfoButton>
               )}
@@ -419,10 +421,12 @@ const Profile: React.FC = () => {
 
                 <Total>
                   <span onClick={() => (window.location.href = "#posts")}>
-                    <strong>{posts.length}</strong> publicações
+                    <strong>{posts.length}</strong>{" "}
+                    {posts.length === 1 ? "publicação" : "publicações"}
                   </span>
-                  <span>
-                    <strong>{friends.length}</strong> amigos
+                  <span onClick={() => (window.location.href = "#friends")}>
+                    <strong>{friends.length}</strong>{" "}
+                    {friends.length === 1 ? "amigo" : "amigos"}
                   </span>
                 </Total>
 
@@ -494,16 +498,19 @@ const Profile: React.FC = () => {
                   {moment(user?.createdAt).format("[Entrou em] MMMM [de] YYYY")}
                 </span>
 
-                <span>
-                  <Cake size={20} weight="bold" />
-                  {/* <Balloon size={20} weight="bold" /> */}
-                  {userLogged?.birthDate}
-                </span>
+                {user?.birthDate && (
+                  <span>
+                    <Cake size={20} weight="bold" />
+                    {moment(user?.birthDate).format(
+                      "[Nasceu em] DD [de] MMMM [de] YYYY",
+                    )}
+                  </span>
+                )}
               </Contact>
             </UserInfo>
           </Overview>
 
-          <Friends>
+          <Friends id="friends">
             <h1>Amigos</h1>
 
             <FriendList>
@@ -534,28 +541,32 @@ const Profile: React.FC = () => {
             </AreaFriendButton>
           </Friends>
 
-          <TitlePosts>
-            <h1>Suas Publicações</h1>
-          </TitlePosts>
+          {posts.length !== 0 && (
+            <>
+              <TitlePosts id="posts">
+                <h1>Suas Publicações</h1>
+              </TitlePosts>
 
-          <Posts id="posts">
-            {posts.map((post) => (
-              <Post
-                key={post.id}
-                authorId={post.user.id}
-                authorAvatar={post.user.avatarUrl}
-                authorName={post.user.name}
-                authorEmail={post.user.email}
-                postId={post.id}
-                content={post.content}
-                tags={post.tags}
-                comments={post.comments}
-                reactions={post.reactions}
-                publishedAt={post.publishedAt}
-                onDeletePost={handleRemovePost}
-              />
-            ))}
-          </Posts>
+              <Posts>
+                {posts.map((post) => (
+                  <Post
+                    key={post.id}
+                    authorId={post.user.id}
+                    authorAvatar={post.user.avatarUrl}
+                    authorName={post.user.name}
+                    authorEmail={post.user.email}
+                    postId={post.id}
+                    content={post.content}
+                    tags={post.tags}
+                    comments={post.comments}
+                    reactions={post.reactions}
+                    publishedAt={post.publishedAt}
+                    onDeletePost={handleRemovePost}
+                  />
+                ))}
+              </Posts>
+            </>
+          )}
         </Content>
 
         <Sidebar>
